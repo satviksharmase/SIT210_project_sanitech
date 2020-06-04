@@ -1,0 +1,28 @@
+#include <HC_SR04.h>
+
+int cm=0;
+int trig = D4;
+int echo=D5;
+int led=D7;
+
+HC_SR04 range= HC_SR04(trig,echo);
+
+void setup()
+{
+    pinMode(led,OUTPUT);
+}
+void loop()
+{
+    cm=range.getDistanceCM();
+    if(cm>20)
+    {
+        digitalWrite(led,HIGH);
+        Particle.publish("sanitech","empty",PRIVATE);
+    }
+    else
+    {
+        digitalWrite(led,LOW);
+        Particle.publish("sanitech","full",PRIVATE);
+    }
+    delay(1000);
+}
